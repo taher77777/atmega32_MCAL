@@ -1,0 +1,62 @@
+#include "STD_TYPE.h"
+#include "BIT_MATH.h"
+#include "WDTM_interface.h"
+#include "WDTM_register.h"
+void WDTM_voidEnable(u8 WDTM_delay)
+{
+	switch(WDTM_delay)
+	{
+
+	case WDTM_TIMER_16_3_MS:
+		CLR_BIT(WDTCR,WDTCR_WDP0);
+		CLR_BIT(WDTCR,WDTCR_WDP1);
+		CLR_BIT(WDTCR,WDTCR_WDP2); break;
+
+	case WDTM_TIMER_32_5_MS:
+		SET_BIT(WDTCR,WDTCR_WDP0);
+			CLR_BIT(WDTCR,WDTCR_WDP1);
+			CLR_BIT(WDTCR,WDTCR_WDP2);break;
+
+	case WDTM_TIMER_65_MS:
+			CLR_BIT(WDTCR,WDTCR_WDP0);
+			SET_BIT(WDTCR,WDTCR_WDP1);
+			CLR_BIT(WDTCR,WDTCR_WDP2);break;
+
+	case WDTM_TIMER_0_13_S:
+		SET_BIT(WDTCR,WDTCR_WDP0);
+			SET_BIT(WDTCR,WDTCR_WDP1);
+			CLR_BIT(WDTCR,WDTCR_WDP2);break;
+
+	case WDTM_TIMER_0_26_S:
+		CLR_BIT(WDTCR,WDTCR_WDP0);
+		CLR_BIT(WDTCR,WDTCR_WDP1);
+		SET_BIT(WDTCR,WDTCR_WDP2);break;
+
+	case WDTM_TIMER_0_52_S:
+		SET_BIT(WDTCR,WDTCR_WDP0);
+			CLR_BIT(WDTCR,WDTCR_WDP1);
+			SET_BIT(WDTCR,WDTCR_WDP2);break;
+
+	case WDTM_TIMER_0_1_S:
+		CLR_BIT(WDTCR,WDTCR_WDP0);
+		SET_BIT(WDTCR,WDTCR_WDP1);
+			SET_BIT(WDTCR,WDTCR_WDP2);break;
+
+	case WDTM_TIMER_2_1_S:
+		SET_BIT(WDTCR,WDTCR_WDP0);
+		SET_BIT(WDTCR,WDTCR_WDP1);
+		SET_BIT(WDTCR,WDTCR_WDP2);break;
+
+	}
+	//enable WDTM
+	SET_BIT(WDTCR,WDTCR_WDE);
+
+}
+void WDTM_voidDisable(void)
+{
+
+	/* Write logical one to WDTOE and WDE */
+	WDTCR = (1<<WDTCR_WDTOE) | (1<<WDTCR_WDE);
+	/* Turn off WDT */
+	WDTCR = 0x00;
+}
